@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, ScrollDemoActivity!</string>
+    <string name="app_name">ScrollDemo</string>
+
+    <dimen name="slide_length">45dp</dimen>
+</resources>
