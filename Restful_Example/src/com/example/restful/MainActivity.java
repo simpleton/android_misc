@@ -1,5 +1,7 @@
 package com.example.restful;
 
+import com.example.restful.data.OrgModelHelper;
+
 import oicq.wlogin_sdk.request.WUserSigInfo;
 import oicq.wlogin_sdk.request.WloginLastLoginInfo;
 import oicq.wlogin_sdk.request.WtloginHelper;
@@ -54,6 +56,17 @@ public class MainActivity extends Activity {
 				login(account.getText().toString(), password.getText().toString());
 			}
 		});
+		
+		Button btn_query = (Button) findViewById(R.id.btn_query);
+		btn_query.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				OrgModelHelper modelHelper = new OrgModelHelper(MainActivity.this);
+				
+			}
+		});
+				
 	}
 	
 	private void login(String account, String password) {

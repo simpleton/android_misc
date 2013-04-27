@@ -40,4 +40,13 @@
         android:layout_marginTop="46dp"
         android:text="Login" />
 
+    <Button
+        android:id="@+id/btn_query"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btn_login"
+        android:layout_alignBottom="@+id/btn_login"
+        android:layout_alignRight="@+id/editTextPwd"
+        android:text="Button" />
+
 </RelativeLayout>

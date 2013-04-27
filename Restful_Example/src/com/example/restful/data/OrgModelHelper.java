@@ -25,14 +25,21 @@ import com.example.restful.data.OrgContent.department_relation;
 public class OrgModelHelper {
 
 	private memberCountCalculater memCounterCalc;
+	private WeakReference<Department> mRootDepartment;
 	private final WeakReference<Context> context;
-	public OrgModelHelper(Context ct, Department root) {
-		context = new WeakReference<Context>(ct);
-		memCounterCalc = new memberCountCalculater(root);
+	public OrgModelHelper(Context ct) {
+		context = new WeakReference<Context>(ct);		
 	}
 	
 	public void bulkInsertOrgInfo(Department root, String AccountUin) {
+		Department weakroot = mRootDepartment.get();
+		if (memCounterCalc == null || weakroot == null || weakroot != root) {
+			memCounterCalc = new memberCountCalculater(root);
+			mRootDepartment = new WeakReference<OrgClient.Department>(root);
+		}
+		
 		Context ct = context.get();
+		
 		if (ct == null) 
 			throw new NullPointerException("Context is NULL");
 		List<ContentValues> departmentList = new ArrayList<ContentValues>();

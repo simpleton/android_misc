@@ -42,7 +42,7 @@ public class OrgInfoFetchService extends IntentService {
 	 * @param corp
 	 */
 	public void saveDepartment(Department corp) {
-		OrgModelHelper model = new OrgModelHelper(OrgInfoFetchService.this, corp);
+		OrgModelHelper model = new OrgModelHelper(OrgInfoFetchService.this);
 		model.bulkInsertOrgInfo(corp, AccountUin);
 	}
 
