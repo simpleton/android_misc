@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				OrgModelHelper modelHelper = new OrgModelHelper(MainActivity.this);
+				OrgModelHelper modelHelper = new OrgModelHelper(MainActivity.this, mAccount);
 				
 			}
 		});

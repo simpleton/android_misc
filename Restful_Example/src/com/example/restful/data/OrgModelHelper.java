@@ -9,6 +9,7 @@ import java.util.List;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 
 import com.example.restful.data.OrgClient.Collegue;
@@ -27,11 +28,14 @@ public class OrgModelHelper {
 	private memberCountCalculater memCounterCalc;
 	private WeakReference<Department> mRootDepartment;
 	private final WeakReference<Context> context;
-	public OrgModelHelper(Context ct) {
-		context = new WeakReference<Context>(ct);		
+	private final String AccountUin;
+	
+	public OrgModelHelper(Context ct, String uin) {
+		context = new WeakReference<Context>(ct);
+		AccountUin = uin;
 	}
 	
-	public void bulkInsertOrgInfo(Department root, String AccountUin) {
+	public void bulkInsertOrgInfo(Department root) {
 		Department weakroot = mRootDepartment.get();
 		if (memCounterCalc == null || weakroot == null || weakroot != root) {
 			memCounterCalc = new memberCountCalculater(root);
@@ -79,6 +83,10 @@ public class OrgModelHelper {
 		
 	}
 	
+	public Cursor queryCollegueInfo(String CollegueUin) {
+		Uri collegueUri = Uri.parse("content://" + OrgProvider.AUTHORITY + "/" + AccountUin + "/");
+		return null;
+	}
 	private void buildContentValuesList(List<ContentValues> departmentList, List<ContentValues> collegueList,
 			List<ContentValues> collegueRelationList, List<ContentValues> departmentRelationList,
 			Department root) {
