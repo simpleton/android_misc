@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.example.restful_example;
+package com.example.restful;
 
 import android.content.Context;
 import oicq.wlogin_sdk.request.WtloginHelper;

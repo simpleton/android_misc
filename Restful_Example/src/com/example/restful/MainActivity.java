@@ -1,4 +1,4 @@
-package com.example.restful_example;
+package com.example.restful;
 
 import oicq.wlogin_sdk.request.WUserSigInfo;
 import oicq.wlogin_sdk.request.WloginLastLoginInfo;
@@ -77,19 +77,7 @@ public class MainActivity extends Activity {
 			public void OnGetStWithPasswd(String userAccount, long dwSrcAppid, int dwMainSigMap, 
 					long dwSubDstAppid,  String userPasswd, WUserSigInfo userSigInfo, int ret){
 				if(ret == util.S_GET_IMAGE){
-//					byte[] image_buf = new byte[0];
-//		      		image_buf = mLoginHelper.GetPictureData(userAccount); 
-//		      		if(image_buf == null){ 
-//		      			return;  
-//		      		}
-//		      		//��ת����֤��ҳ��
-//		      		Intent intent = new Intent();
-//		      		intent.setClass(Login.this, CodePage.class);
-//		      		Bundle bundle = new Bundle();
-//	  				bundle.putByteArray("CODE", image_buf);
-//	  				bundle.putString("ACCOUNT", userAccount);
-//	  				intent.putExtras(bundle);
-//	  				Login.this.startActivityForResult(intent, 2);
+
 				} else if(ret == util.S_SUCCESS){
 					mSkey = new String(userSigInfo._sKey);
 					mAccount = userAccount;
@@ -136,10 +124,12 @@ public class MainActivity extends Activity {
 			}		
 			 
 		};
+		
 		private void onLoginSuccess() {
-			OrgClient.run(mAccount, mSkey);
-			//Client.main();
+			OrgInfoFetchService.startService(MainActivity.this, mAccount, mSkey);
+			//OrganizationFetchService.startService(MainActivity.this, mAccount, mSkey);
 		}
+		
 		private void showDialog(Context context, String strMsg) {  
 	        AlertDialog.Builder builder = new AlertDialog.Builder(context);   
 	        builder.setTitle("提示");  
@@ -148,7 +138,7 @@ public class MainActivity extends Activity {
 	                    public void onClick(DialogInterface dialog, int whichButton) {  
 	                         dialog.dismiss();
 	                    }      
-	                });  
+	                }); 
 	        
 	        builder.show();      
 	    }
