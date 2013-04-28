@@ -8,6 +8,7 @@ import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Headers;
 import retrofit.http.RestAdapter;
+import retrofit.http.RetrofitError;
 
 public class OrgClient {
 	@SuppressWarnings("unused")
@@ -87,14 +88,22 @@ public class OrgClient {
 	 * GET organization information <b>synchronously</b>
 	 * @param uin uin info should feed in cookies
 	 * @param skey as same as uin, feeded in cookies
+	 * @throws RetrofitError Thrown if any error occurs during the HTTP request
 	 */
 	public static Content GET(final String uin, final String skey) {
+		Content content = null;
 		RestAdapter restAdapter = initClient(uin, skey);
 
 		// Create an instance API interface.
 		Organization organization = restAdapter.create(Organization.class);
 
 		// Fetch and print a list of the contributors to this library.
-		return organization.getTree();
+		try {
+			content = organization.getTree();	
+		} catch (RetrofitError e) {
+			throw e;
+		}
+		
+		return content;
 	}
 }

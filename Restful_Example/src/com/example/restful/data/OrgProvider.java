@@ -39,9 +39,16 @@ public final class OrgProvider {
 
     private enum UriType {
         DEPARTMENT( "#/" + DB_Department.TABLE_NAME , DB_Department.TABLE_NAME, DB_Department.TYPE_ELEM_TYPE),
+        DEPARTMENT_UIN( "#/" + DB_Department.TABLE_NAME + "/#", DB_Department.TABLE_NAME, DB_Department.TYPE_ELEM_TYPE),
+        
         COLLEGUE("#/" + DB_Collegue.TABLE_NAME, DB_Collegue.TABLE_NAME, DB_Collegue.TYPE_ELEM_TYPE),
+        COLLEGUE_UIN("#/" + DB_Collegue.TABLE_NAME, DB_Collegue.TABLE_NAME + "/#", DB_Collegue.TYPE_ELEM_TYPE),
+        
         COLLEGUE_RELATION("#/" + collegue_relation.TABLE_NAME, collegue_relation.TABLE_NAME, collegue_relation.TYPE_ELEM_TYPE),
-        DEPARTMENT_RELATION("#/" + department_relation.TABLE_NAME, department_relation.TABLE_NAME, department_relation.TYPE_ELEM_TYPE);
+        COLLEGUE_RELATION_UIN("#/" + collegue_relation.TABLE_NAME + "/#", collegue_relation.TABLE_NAME, collegue_relation.TYPE_ELEM_TYPE),
+        
+        DEPARTMENT_RELATION("#/" + department_relation.TABLE_NAME, department_relation.TABLE_NAME, department_relation.TYPE_ELEM_TYPE),
+        DEPARTMENT_RELATION_UIN("#/" + department_relation.TABLE_NAME + "/#", department_relation.TABLE_NAME, department_relation.TYPE_ELEM_TYPE);
 
         private String mTableName;
         private String mType;
@@ -89,14 +96,25 @@ public final class OrgProvider {
 
         int result = -1;
 
-        switch (uriType) {
-            case DEPARTMENT:
-            case COLLEGUE:
-            case COLLEGUE_RELATION:
-            case DEPARTMENT_RELATION:
-                result = db.delete(uriType.getTableName(), selection, selectionArgs);
-                break;
-        }
+		switch (uriType) {
+		case DEPARTMENT:
+		case COLLEGUE:
+		case COLLEGUE_RELATION:
+		case DEPARTMENT_RELATION:
+			result = db
+					.delete(uriType.getTableName(), selection, selectionArgs);
+			break;
+		case COLLEGUE_RELATION_UIN:
+			break;
+		case COLLEGUE_UIN:
+			break;
+		case DEPARTMENT_RELATION_UIN:
+			break;
+		case DEPARTMENT_UIN:
+			break;
+		default:
+			break;
+		}
 
         //getContext().getContentResolver().notifyChange(uri, null);
         return result;
@@ -120,19 +138,28 @@ public final class OrgProvider {
             Log.d(TAG, "insert: uri=" + uri + ", match is " + uriType.name());
         }
 
-        Uri resultUri;
+        Uri resultUri = null;
 
-        switch (uriType) {
-            case DEPARTMENT:
-            case COLLEGUE:
-            case COLLEGUE_RELATION:
-            case DEPARTMENT_RELATION:
-                id = db.insert(uriType.getTableName(), "foo", values);
-                resultUri = id == -1 ? null : ContentUris.withAppendedId(uri, id);
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown URI " + uri);
-        }
+		switch (uriType) {
+		case DEPARTMENT:
+		case COLLEGUE:
+		case COLLEGUE_RELATION:
+		case DEPARTMENT_RELATION:
+			id = db.insert(uriType.getTableName(), "foo", values);
+			resultUri = id == -1 ? null : ContentUris.withAppendedId(uri, id);
+			break;
+		case COLLEGUE_RELATION_UIN:
+			break;
+		case COLLEGUE_UIN:
+			break;
+		case DEPARTMENT_RELATION_UIN:
+			break;
+		case DEPARTMENT_UIN:
+			break;
+
+		default:
+			throw new IllegalArgumentException("Unknown URI " + uri);
+		}
 
         // Notify with the base uri, not the new uri (nobody is watching a new
         // record)
@@ -271,16 +298,35 @@ public final class OrgProvider {
         if (DEBUG) {
             Log.d(TAG, "query: uri=" + uri + ", match is " + uriType.name());
         }
-
-        switch (uriType) {
-            case DEPARTMENT:
-            case COLLEGUE:
-            case COLLEGUE_RELATION:
-            case DEPARTMENT_RELATION:
-                c = db.query(uriType.getTableName(), projection, selection, selectionArgs,
-                        null, null, sortOrder);
-                break;
-        }
+        
+        String groupBy = uri.getQueryParameter(OrgContent.KEY_GROUPBY);
+        String having = uri.getQueryParameter(OrgContent.KEY_HAVING);
+        String limit = uri.getQueryParameter(OrgContent.KEY_LIMIT);
+        
+		switch (uriType) {
+		case DEPARTMENT:
+		case COLLEGUE:
+		case COLLEGUE_RELATION:
+		case DEPARTMENT_RELATION:
+			c = db.query(uriType.getTableName(), projection, selection,
+					selectionArgs, null, null, sortOrder);
+		case COLLEGUE_RELATION_UIN:
+			Long uin = ContentUris.parseId(uri);
+			if (selection == null) {
+				selection = makeSelection(OrgContent.DB_Collegue.Columns.UIN.getName());
+				selectionArgs = new String[]{String.valueOf(uin)};
+				c = db.query(uriType.getTableName(), projection, selection, selectionArgs, groupBy, having, sortOrder, limit);
+			}
+			break;
+		case COLLEGUE_UIN:
+			break;
+		case DEPARTMENT_RELATION_UIN:
+			break;
+		case DEPARTMENT_UIN:
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown URI " + uri);
+		}
 
 //        if ((c != null) && !isTemporary()) {
 //            c.setNotificationUri(getContext().getContentResolver(), uri);
@@ -301,16 +347,31 @@ public final class OrgProvider {
 
         int result = -1;
 
-        switch (uriType) {
-            case DEPARTMENT:
-            case COLLEGUE:
-            case COLLEGUE_RELATION:
-            case DEPARTMENT_RELATION:
-                result = db.update(uriType.getTableName(), values, selection, selectionArgs);
-                break;
-        }
+		switch (uriType) {
+		case DEPARTMENT:
+		case COLLEGUE:
+		case COLLEGUE_RELATION:
+		case DEPARTMENT_RELATION:
+			result = db.update(uriType.getTableName(), values, selection,
+					selectionArgs);
+			break;
+		case COLLEGUE_RELATION_UIN:
+			break;
+		case COLLEGUE_UIN:
+			break;
+		case DEPARTMENT_RELATION_UIN:
+			break;
+		case DEPARTMENT_UIN:
+			break;
+		default:
+            throw new IllegalArgumentException("Unknown URI " + uri);
+		}
 
         //getContext().getContentResolver().notifyChange(uri, null);
         return result;
+    }
+    
+    private static String makeSelection(String key) {
+    	return key + " = ? ";
     }
 }

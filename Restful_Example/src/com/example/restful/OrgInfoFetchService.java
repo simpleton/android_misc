@@ -1,5 +1,6 @@
 package com.example.restful;
 
+import retrofit.http.RetrofitError;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
@@ -30,8 +31,10 @@ public class OrgInfoFetchService extends IntentService {
 		if (uin != null && uin.length() > 0 && skey != null
 				&& skey.length() > 0) {
 			AccountUin = uin;
-			Content orgContent = OrgClient.GET(uin, skey);
+			Content orgContent = null;
 			
+			orgContent = OrgClient.GET(uin, skey);
+
 			Department corp = orgContent.data;
 			saveDepartment(corp);						
 		}

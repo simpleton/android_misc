@@ -35,8 +35,20 @@ public class OrgModelHelper {
 		AccountUin = uin;
 	}
 	
+	
+	/**
+	 * 
+	 * Bulk Insert
+	 * 
+	 */	
+	
 	public void bulkInsertOrgInfo(Department root) {
-		Department weakroot = mRootDepartment.get();
+		Department weakroot = null;
+	
+		if (mRootDepartment != null) {
+			weakroot = mRootDepartment.get();
+		}
+		
 		if (memCounterCalc == null || weakroot == null || weakroot != root) {
 			memCounterCalc = new memberCountCalculater(root);
 			mRootDepartment = new WeakReference<OrgClient.Department>(root);
@@ -79,14 +91,11 @@ public class OrgModelHelper {
 		if (context.get() != null) 
 			OrgProvider.bulkInsert(department_relation_uri, 
 					departmentRelationList.toArray(new ContentValues[departmentRelationList.size()]), 
-					ct);
-		
+					ct);		
 	}
-	
-	public Cursor queryCollegueInfo(String CollegueUin) {
-		Uri collegueUri = Uri.parse("content://" + OrgProvider.AUTHORITY + "/" + AccountUin + "/");
-		return null;
-	}
+	/**
+	 * help user build contentValues
+	 */
 	private void buildContentValuesList(List<ContentValues> departmentList, List<ContentValues> collegueList,
 			List<ContentValues> collegueRelationList, List<ContentValues> departmentRelationList,
 			Department root) {
@@ -131,4 +140,28 @@ public class OrgModelHelper {
 			buildContentValuesList(departmentList, collegueList, collegueRelationList, departmentRelationList, department);
 		}
 	}
+	
+	/**
+	 * 
+	 * query interface
+	 * 
+	 */
+	
+	public Cursor queryCollegueInfo(String CollegueUin, String groupby, String having, String limit,
+									String selection, String[] selectionArgs, String sortOrder) {
+		Context ct = context.get();
+		if (ct == null) throw new NullPointerException("Context is NULL");
+		
+		Uri collegueUri = Uri.parse("content://" + OrgProvider.AUTHORITY + "/" + AccountUin + "/" + 
+									DB_Collegue.TABLE_NAME + "/" + CollegueUin);
+		
+		collegueUri.buildUpon().appendQueryParameter(OrgContent.KEY_LIMIT, groupby);
+		collegueUri.buildUpon().appendQueryParameter(OrgContent.KEY_HAVING, having);
+		collegueUri.buildUpon().appendQueryParameter(OrgContent.KEY_LIMIT, limit);
+		
+		return OrgProvider.query(collegueUri, null, selection, selectionArgs, sortOrder, ct);
+	}
+	
+	
+	
 }

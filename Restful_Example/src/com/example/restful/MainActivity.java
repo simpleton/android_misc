@@ -1,7 +1,5 @@
 package com.example.restful;
 
-import com.example.restful.data.OrgModelHelper;
-
 import oicq.wlogin_sdk.request.WUserSigInfo;
 import oicq.wlogin_sdk.request.WloginLastLoginInfo;
 import oicq.wlogin_sdk.request.WtloginHelper;
@@ -19,6 +17,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.example.restful.data.OrgModelHelper;
 
 public class MainActivity extends Activity {
 	private static final String TAG = "MainActivity";
@@ -62,8 +62,8 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				OrgModelHelper modelHelper = new OrgModelHelper(MainActivity.this, mAccount);
-				
+				OrgModelHelper modelHelper = new OrgModelHelper(MainActivity.this, "2355200810");
+				modelHelper.queryCollegueInfo("1", null, null, null, null, null, null);
 			}
 		});
 				

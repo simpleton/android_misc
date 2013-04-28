@@ -1,13 +1,13 @@
 package com.example.restful.data;
 
-import com.example.restful.data.util.ColumnMetadata;
-
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.util.Log;
+
+import com.example.restful.data.util.ColumnMetadata;
 
 /**
  * 
@@ -16,7 +16,11 @@ import android.util.Log;
 public abstract class OrgContent {
 
 	public static final Uri CONTENT_URI = Uri.parse("content://"+ OrgProvider.AUTHORITY);
-
+	
+	public static final String KEY_LIMIT = "limit";
+	public static final String KEY_GROUPBY = "groupby";
+	public static final String KEY_HAVING = "having";
+	
 	private OrgContent() {
 	}
 
