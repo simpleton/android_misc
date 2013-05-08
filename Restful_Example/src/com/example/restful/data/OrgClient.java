@@ -3,12 +3,16 @@ package com.example.restful.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.runner.Version;
+
 import retrofit.http.Callback;
 import retrofit.http.GET;
 import retrofit.http.Header;
 import retrofit.http.Headers;
 import retrofit.http.RestAdapter;
 import retrofit.http.RetrofitError;
+
+import android.os.Build;
 
 import com.example.restful.data.util.AcceptAllHttpsClient;
 
@@ -62,13 +66,22 @@ public class OrgClient {
 				return headers;
 			}
 		};
-		
-		RestAdapter restAdapter = new RestAdapter.Builder()
-			.setServer(API_URL)
-			.setDebug(true)
-			.setHeaders(headers)
-			.setClient(new AcceptAllHttpsClient())
-			.build();
+		RestAdapter restAdapter;
+		// Build.VERSION_CODES.HONEYCOMB == 11
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+			restAdapter = new RestAdapter.Builder()
+				.setServer(API_URL)
+				.setDebug(true)
+				.setHeaders(headers)
+				.setClient(new AcceptAllHttpsClient())
+				.build();
+		} else {
+			restAdapter = new RestAdapter.Builder()
+				.setServer(API_URL)
+				.setDebug(true)
+				.setHeaders(headers)
+				.build();
+		}
 		return restAdapter;
 	}
 
