@@ -44,9 +44,10 @@ public class ThreadTestActivity extends Activity {
 
         graphViewSeries = new GraphViewSeries(viewData);
         GraphView graphView = new BarGraphView(this, "Thread Profile");
-        graphView.getGraphViewStyle().setNumHorizontalLabels(10);
+        graphView.getGraphViewStyle().setNumVerticalLabels(11);
+        graphView.getGraphViewStyle().setNumHorizontalLabels(14);
         graphView.setManualYAxisBounds(valueMax, 0);
-        graphView.addSeries(graphViewSeries);
+        graphView.addSeries(graphViewSeries);graphView.setManualYAxisBounds(valueMax, 0);
         LinearLayout layout = (LinearLayout) findViewById(R.id.graph);
         layout.addView(graphView);
     }
