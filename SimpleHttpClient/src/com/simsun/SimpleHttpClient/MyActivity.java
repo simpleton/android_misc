@@ -23,7 +23,7 @@ public class MyActivity extends Activity {
     /**
      * Called when the activity is first created.
      */
-    private static final String API_URL = "https://github.com/";
+    private static final String API_URL = "https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/21.gif";
     final OkHttpClient okHttpClient = new OkHttpClient();
     @Override
     public void onCreate(Bundle savedInstanceState) {
