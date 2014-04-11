@@ -1,6 +1,7 @@
-package com.tencent.mm.pluginsdk.downloader;
+package com.tencent.mm.pluginsdk.downloader.worker;
 
 import android.util.Log;
+import com.tencent.mm.pluginsdk.downloader.DownLoadClient;
 import com.tencent.mm.pluginsdk.downloader.model.PluginDescription;
 import com.tencent.mm.pluginsdk.downloader.util.HexUtil;
 import org.json.JSONException;
@@ -14,11 +15,11 @@ import java.net.URL;
 /**
  * Created by simsun on 2014/4/11.
  */
-public class MMPluginLoader implements PluginLoader {
-    private static final String TAG = "MMPluginLoader";
+public class MMPluginRetrieveWorker implements PluginRetrieveWorker {
+    private static final String TAG = "MMPluginRetrieveWorker";
     private final DownLoadClient downLoadClient;
 
-    public MMPluginLoader(DownLoadClient downLoadClient) {
+    public MMPluginRetrieveWorker(DownLoadClient downLoadClient) {
         this.downLoadClient = downLoadClient;
     }
 

@@ -1,7 +1,6 @@
 package com.tencent.mm.pluginsdk.downloader.worker;
 
 import android.util.Log;
-import com.tencent.mm.pluginsdk.downloader.PluginLoader;
 import com.tencent.mm.pluginsdk.downloader.model.PluginDescription;
 
 import java.io.File;
@@ -12,13 +11,19 @@ import java.net.URL;
  */
 public class ConfigFileDownloadTask extends DownloadTask {
     private static final String TAG = "ConfigFileDownloadTask";
+    public interface OnComplete {
+        public void savedFinished(PluginDescription pluginDescription);
+    }
 
+    private final OnComplete onComplete;
     public ConfigFileDownloadTask(
             String pluginName,
             URL url,
-            PluginLoader pluginLoader,
-            File outFile) {
+            PluginRetrieveWorker pluginLoader,
+            File outFile,
+            OnComplete onComplete) {
         super(pluginName, url, pluginLoader, outFile);
+        this.onComplete = onComplete;
     }
 
     @Override
@@ -30,8 +35,10 @@ public class ConfigFileDownloadTask extends DownloadTask {
     public void run() {
         super.run();
         Log.i(TAG, "-->Start downloading config file");
-        PluginDescription pluginDescription = pluginLoader.retrieveConfig(url);
-        pluginLoader.saveConfig(pluginDescription, outFile);
+        PluginDescription pluginDescription = pluginRetrieveWorker.retrieveConfig(url);
+        pluginRetrieveWorker.saveConfig(pluginDescription, outFile);
+
+        onComplete.savedFinished(pluginDescription);
         Log.i(TAG, "<--End downloading config file");
     }
 }

@@ -1,6 +1,5 @@
 package com.tencent.mm.pluginsdk.downloader.worker;
 
-import com.tencent.mm.pluginsdk.downloader.PluginLoader;
 import com.tencent.mm.pluginsdk.downloader.util.Preconditions;
 
 import java.io.File;
@@ -13,17 +12,17 @@ public abstract class DownloadTask implements Runnable {
 
     protected final String pluginName;
     protected final URL url;
-    protected final PluginLoader pluginLoader;
+    protected final PluginRetrieveWorker pluginRetrieveWorker;
     protected final File outFile;
 
     public DownloadTask(
             String pluginName,
             URL url,
-            PluginLoader pluginLoader,
+            PluginRetrieveWorker pluginRetrieveWorker,
             File outFile) {
         this.pluginName = Preconditions.checkNotNull(pluginName);
         this.url = Preconditions.checkNotNull(url);
-        this.pluginLoader = Preconditions.checkNotNull(pluginLoader);
+        this.pluginRetrieveWorker = Preconditions.checkNotNull(pluginRetrieveWorker);
         this.outFile = Preconditions.checkNotNull(outFile);
     }
 

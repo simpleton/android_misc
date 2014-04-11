@@ -3,6 +3,7 @@ package com.tencent.mm.pluginsdk.downloader;
 import android.content.Context;
 import android.util.Log;
 import com.tencent.mm.pluginsdk.downloader.model.PluginDescription;
+import com.tencent.mm.pluginsdk.downloader.worker.PluginRetrieveWorker;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,9 +24,9 @@ public class PluginManager {
     public static final String STATUS_RUNNING = "RUNNING";
     public static final String[] SUPPORTED_PLUGINS = {"shoot"};
 
-    private final PluginLoader loader;
+    private final PluginRetrieveWorker loader;
 
-    public PluginManager(PluginLoader loader) {
+    public PluginManager(PluginRetrieveWorker loader) {
         this.loader = loader;
     }
 
@@ -89,8 +90,8 @@ public class PluginManager {
             PluginDescription localDescription = loadLocalDescription(context, pluginName);
             PluginDescription remoteDescription = updateDescription(pluginName);
             if (needDownloadPlugin(localDescription, remoteDescription)) {
-                loader.retrievePlugin(new URL(remoteDescription.url),
-                        new File(getPluginStorage(context), remoteDescription.md5 + ".aar"));
+               /* loader.retrievePlugin(new URL(remoteDescription.url),
+                        new File(getPluginStorage(context), remoteDescription.md5 + ".aar"));*/
             }
         } catch (IOException e) {
             Log.e(TAG, e.toString());

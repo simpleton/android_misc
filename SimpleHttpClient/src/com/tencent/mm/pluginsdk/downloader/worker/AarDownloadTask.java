@@ -1,7 +1,6 @@
 package com.tencent.mm.pluginsdk.downloader.worker;
 
 import android.util.Log;
-import com.tencent.mm.pluginsdk.downloader.PluginLoader;
 
 import java.io.File;
 import java.io.InputStream;
@@ -13,12 +12,19 @@ import java.net.URL;
 public class AarDownloadTask extends DownloadTask {
     private static final String TAG = "AarDownloadTask";
 
+    public interface OnComplete {
+        public void savedFinished(File plugin);
+    }
+
+    private final OnComplete onComplete;
     public AarDownloadTask(
             String pluginName,
             URL url,
-            PluginLoader pluginLoader,
-            File outFile) {
+            PluginRetrieveWorker pluginLoader,
+            File outFile,
+            OnComplete onComplete) {
         super(pluginName, url, pluginLoader, outFile);
+        this.onComplete = onComplete;
     }
 
     @Override
@@ -30,8 +36,10 @@ public class AarDownloadTask extends DownloadTask {
     public void run() {
         super.run();
         Log.i(TAG, "-->start download aarFileTask");
-        InputStream inputStream = pluginLoader.retrievePlugin(url);
-        pluginLoader.savePlugin(inputStream, outFile);
+        InputStream inputStream = pluginRetrieveWorker.retrievePlugin(url);
+        pluginRetrieveWorker.savePlugin(inputStream, outFile);
+
+        onComplete.savedFinished(outFile);
         Log.i(TAG, "<--end download aarFileTask");
     }
 }
