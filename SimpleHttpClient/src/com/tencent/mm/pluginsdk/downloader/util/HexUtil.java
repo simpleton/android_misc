@@ -66,7 +66,7 @@ public class HexUtil {
             outputStream = new FileOutputStream(outFile);
 
             int read = 0;
-            byte[] bytes = new byte[1024*4];
+            byte[] bytes = new byte[1024];
 
             while ((read = inputStream.read(bytes)) != -1) {
                 outputStream.write(bytes, 0, read);
@@ -82,4 +82,12 @@ public class HexUtil {
         }
     }
 
+    public static byte[] readFully(InputStream in) throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        for (int count; (count = in.read(buffer)) != -1; ) {
+            out.write(buffer, 0, count);
+        }
+        return out.toByteArray();
+    }
 }

@@ -16,10 +16,9 @@ public class ConfigFileDownloadTask extends DownloadTask {
     public ConfigFileDownloadTask(
             String pluginName,
             URL url,
-            DownLoadClient downLoadClient,
             PluginLoader pluginLoader,
             File outFile) {
-        super(pluginName, url, downLoadClient, pluginLoader, outFile);
+        super(pluginName, url, pluginLoader, outFile);
     }
 
     @Override

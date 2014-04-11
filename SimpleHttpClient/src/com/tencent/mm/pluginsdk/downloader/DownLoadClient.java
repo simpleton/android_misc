@@ -1,4 +1,4 @@
-package com.tencent.mm.pluginsdk.downloader.worker;
+package com.tencent.mm.pluginsdk.downloader;
 
 import java.io.InputStream;
 import java.net.URL;

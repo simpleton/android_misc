@@ -12,13 +12,13 @@ import java.net.URL;
  */
 public class AarDownloadTask extends DownloadTask {
     private static final String TAG = "AarDownloadTask";
+
     public AarDownloadTask(
             String pluginName,
             URL url,
-            DownLoadClient downLoadClient,
             PluginLoader pluginLoader,
             File outFile) {
-        super(pluginName, url, downLoadClient, pluginLoader, outFile);
+        super(pluginName, url, pluginLoader, outFile);
     }
 
     @Override

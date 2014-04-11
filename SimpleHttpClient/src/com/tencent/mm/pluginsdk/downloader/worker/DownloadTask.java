@@ -13,19 +13,16 @@ public abstract class DownloadTask implements Runnable {
 
     protected final String pluginName;
     protected final URL url;
-    protected final DownLoadClient downLoadClient;
     protected final PluginLoader pluginLoader;
     protected final File outFile;
 
     public DownloadTask(
             String pluginName,
             URL url,
-            DownLoadClient downLoadClient,
             PluginLoader pluginLoader,
             File outFile) {
         this.pluginName = Preconditions.checkNotNull(pluginName);
         this.url = Preconditions.checkNotNull(url);
-        this.downLoadClient = Preconditions.checkNotNull(downLoadClient);
         this.pluginLoader = Preconditions.checkNotNull(pluginLoader);
         this.outFile = Preconditions.checkNotNull(outFile);
     }
