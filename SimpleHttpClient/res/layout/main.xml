@@ -23,5 +23,13 @@
             android:id="@+id/btn_ok"
             android:text="OkHttp Client"
             />
+    <Button
+            android:layout_height="60dp"
+            android:layout_width="fill_parent"
+            android:layout_marginTop="30dp"
+            android:id="@+id/btn_plugin"
+            android:text="PLugin Client"
+            />
+
 </LinearLayout>
 

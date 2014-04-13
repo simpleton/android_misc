@@ -119,8 +119,10 @@ public class PluginManager {
 
     /**
      * start downloading target plugin, if local repo didnot existed or exipred.
-     *
+     * @param context
      * @param pluginName target plugin name, it should contains {@code SUPPORTED_PLUGINS}
+     * @param listener
+     * @throws IOException
      */
     public void startDownloadPluginIfNecessary(
             final Context context,

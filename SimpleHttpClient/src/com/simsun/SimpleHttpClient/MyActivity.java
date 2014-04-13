@@ -9,9 +9,13 @@ import android.widget.Button;
 import com.simsun.SimpleHttpClient.httpclient.AsyncHttpClient;
 import com.simsun.SimpleHttpClient.httpclient.AsyncHttpResponseHandler;
 import com.squareup.okhttp.OkHttpClient;
+import com.tencent.mm.pluginsdk.downloader.MMPluginLoaderFacotry;
+import com.tencent.mm.pluginsdk.downloader.PluginManager;
+import com.tencent.mm.pluginsdk.downloader.worker.AarDownloadTask;
 import org.apache.http.Header;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -25,6 +29,7 @@ public class MyActivity extends Activity {
      */
     private static final String API_URL = "https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/21.gif";
     final OkHttpClient okHttpClient = new OkHttpClient();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +76,29 @@ public class MyActivity extends Activity {
                 new OkRetireTask().execute(API_URL);
             }
         });
+        final PluginManager pluginManager = new PluginManager(MMPluginLoaderFacotry.build());
+        Button pluginBtn = (Button) findViewById(R.id.btn_plugin);
+        pluginBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    pluginManager.startDownloadPluginIfNecessary(
+                            MyActivity.this,
+                            PluginManager.SUPPORTED_PLUGINS[0],
+                            new AarDownloadTask.OnComplete() {
+                                @Override
+                                public void savedFinished(File plugin) {
+                                    Log.i(TAG, plugin.getAbsolutePath());
+                                }
+                            }
+                    );
+                } catch (IOException e) {
+                    Log.e(TAG, e.toString());
+                }
+            }
+        });
     }
+
     public byte[] readFully(InputStream in) throws IOException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
@@ -98,8 +125,7 @@ public class MyActivity extends Activity {
                 Log.d(TAG, new String(response, "UTF-8"));
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-            finally {
+            } finally {
                 if (in != null) try {
                     in.close();
                 } catch (IOException e) {
