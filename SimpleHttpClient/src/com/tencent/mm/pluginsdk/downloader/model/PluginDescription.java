@@ -25,21 +25,11 @@ public class PluginDescription implements Parcelable{
     public final String url;
     public final String md5;
     public final String version;
+    private String jsonString;
     public int size;
 
-    public PluginDescription(String url, String md5, String version, String id) {
-        this(url, md5, version, id, 0);
-    }
-
-    public PluginDescription(String url, String md5, String version, String id, int size) {
-        this.id = Preconditions.checkNotNull(id);
-        this.url = Preconditions.checkNotNull(url);
-        this.md5 = Preconditions.checkNotNull(md5);
-        this.version = Preconditions.checkNotNull(version);
-        this.size = size;
-    }
-
     public PluginDescription(JSONObject json) throws JSONException {
+        this.jsonString = Preconditions.checkNotNull(json).toString();
         this.id = Preconditions.checkNotNull(json.getString("id"));
         this.url = Preconditions.checkNotNull(json.getString("url"));
         this.md5 = Preconditions.checkNotNull(json.getString("md5"));
@@ -80,5 +70,22 @@ public class PluginDescription implements Parcelable{
         md5 = Preconditions.checkNotNull(source.readString());
         version = Preconditions.checkNotNull(source.readString());
         size = source.readInt();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(id).append(":")
+                .append(url).append(":")
+                .append(md5).append(":")
+                .append(version);
+        return stringBuilder.toString();
+    }
+
+    public String getJsonString() {
+        if (jsonString == null || jsonString.length() <= 0) {
+            throw new IllegalArgumentException("jsonString is empty");
+        }
+        return jsonString;
     }
 }

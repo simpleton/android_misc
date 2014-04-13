@@ -7,9 +7,7 @@ import com.tencent.mm.pluginsdk.downloader.util.HexUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 
 /**
@@ -55,6 +53,14 @@ public class MMPluginRetrieveWorker implements PluginRetrieveWorker {
 
     @Override
     public void saveConfig(PluginDescription pluginDescription, File configFile) {
-
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(configFile);
+            fileWriter.write(pluginDescription.getJsonString());
+        } catch (IOException e) {
+            Log.e(TAG, e.toString());
+        } finally {
+            HexUtil.closeQuietly(fileWriter);
+        }
     }
 }

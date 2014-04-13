@@ -16,15 +16,16 @@ public class AarDownloadTask extends DownloadTask {
         public void savedFinished(File plugin);
     }
 
-    private final OnComplete onComplete;
+    private final OnComplete listener;
+
     public AarDownloadTask(
             String pluginName,
             URL url,
             PluginRetrieveWorker pluginLoader,
             File outFile,
-            OnComplete onComplete) {
+            OnComplete listener) {
         super(pluginName, url, pluginLoader, outFile);
-        this.onComplete = onComplete;
+        this.listener = listener;
     }
 
     @Override
@@ -39,7 +40,7 @@ public class AarDownloadTask extends DownloadTask {
         InputStream inputStream = pluginRetrieveWorker.retrievePlugin(url);
         pluginRetrieveWorker.savePlugin(inputStream, outFile);
 
-        onComplete.savedFinished(outFile);
+        listener.savedFinished(outFile);
         Log.i(TAG, "<--end download aarFileTask");
     }
 }

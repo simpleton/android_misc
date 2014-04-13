@@ -15,15 +15,16 @@ public class ConfigFileDownloadTask extends DownloadTask {
         public void savedFinished(PluginDescription pluginDescription);
     }
 
-    private final OnComplete onComplete;
+    private final OnComplete listener;
+
     public ConfigFileDownloadTask(
             String pluginName,
             URL url,
             PluginRetrieveWorker pluginLoader,
             File outFile,
-            OnComplete onComplete) {
+            OnComplete listener) {
         super(pluginName, url, pluginLoader, outFile);
-        this.onComplete = onComplete;
+        this.listener = listener;
     }
 
     @Override
@@ -38,7 +39,7 @@ public class ConfigFileDownloadTask extends DownloadTask {
         PluginDescription pluginDescription = pluginRetrieveWorker.retrieveConfig(url);
         pluginRetrieveWorker.saveConfig(pluginDescription, outFile);
 
-        onComplete.savedFinished(pluginDescription);
+        listener.savedFinished(pluginDescription);
         Log.i(TAG, "<--End downloading config file");
     }
 }
