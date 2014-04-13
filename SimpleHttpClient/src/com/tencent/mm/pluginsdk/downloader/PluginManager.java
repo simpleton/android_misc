@@ -133,7 +133,7 @@ public class PluginManager {
             @Override
             public void savedFinished(PluginDescription remoteDescription) {
                 try {
-                    if (needDownloadPlugin(localDescription, remoteDescription)) {
+                    if (needDownloadPlugin(context, localDescription ,remoteDescription)) {
                         loader.loadPlugin(pluginName,
                                 new URL(remoteDescription.url),
                                 getAarFile(context, remoteDescription),
@@ -147,8 +147,8 @@ public class PluginManager {
         });
     }
 
-    public boolean needDownloadPlugin(PluginDescription local, PluginDescription remote) {
-        return local == null || !local.md5.equals(remote.md5);
+    public boolean needDownloadPlugin(Context context, PluginDescription local, PluginDescription remote) {
+        return local == null || getAarFile(context, remote).length() < 4096;
     }
 
     private PluginDescription loadLocalDescription(Context context, String pluginName) throws IOException {

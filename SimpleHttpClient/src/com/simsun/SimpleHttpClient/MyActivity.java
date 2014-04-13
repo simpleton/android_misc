@@ -11,6 +11,7 @@ import com.simsun.SimpleHttpClient.httpclient.AsyncHttpResponseHandler;
 import com.squareup.okhttp.OkHttpClient;
 import com.tencent.mm.pluginsdk.downloader.MMPluginLoaderFacotry;
 import com.tencent.mm.pluginsdk.downloader.PluginManager;
+import com.tencent.mm.pluginsdk.downloader.util.HexUtil;
 import com.tencent.mm.pluginsdk.downloader.worker.AarDownloadTask;
 import org.apache.http.Header;
 
@@ -88,7 +89,12 @@ public class MyActivity extends Activity {
                             new AarDownloadTask.OnComplete() {
                                 @Override
                                 public void savedFinished(File plugin) {
-                                    Log.i(TAG, plugin.getAbsolutePath());
+                                    try {
+                                        Log.i(TAG, plugin.getAbsolutePath());
+                                        Log.i(TAG, HexUtil.readFileAsString(plugin));
+                                    } catch (IOException e) {
+                                        Log.e(TAG, e.toString());
+                                    }
                                 }
                             }
                     );

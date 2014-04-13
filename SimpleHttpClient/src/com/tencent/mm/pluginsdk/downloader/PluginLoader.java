@@ -36,12 +36,7 @@ public class PluginLoader {
             File outFile,
             ConfigFileDownloadTask.OnComplete callback) {
         DownloadTask downloadTask = new ConfigFileDownloadTask(
-                pluginName, url, pluginRetrieveWorker, outFile, new ConfigFileDownloadTask.OnComplete() {
-            @Override
-            public void savedFinished(PluginDescription pluginDescription) {
-                Log.i(TAG, pluginDescription.toString());
-            }
-        });
+                pluginName, url, pluginRetrieveWorker, outFile, callback);
         executor.submit(downloadTask);
     }
 
@@ -58,12 +53,7 @@ public class PluginLoader {
             File outFile,
             AarDownloadTask.OnComplete callback) {
         DownloadTask downloadTask = new AarDownloadTask(
-                pluginName, url, pluginRetrieveWorker, outFile , new AarDownloadTask.OnComplete() {
-            @Override
-            public void savedFinished(File plugin) {
-                Log.i(TAG, plugin.getAbsolutePath());
-            }
-        });
+                pluginName, url, pluginRetrieveWorker, outFile, callback);
         executor.submit(downloadTask);
     }
 }
