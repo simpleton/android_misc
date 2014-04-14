@@ -1,0 +1,12 @@
+User->PluginHelper: Plugin Request
+PluginHelper->PluginManager: request plugin
+PluginManager->PluginLoader: load plugin
+PluginLoader->+RetrieveWorker: load config
+RetrieveWorker-->-PluginLoader: 
+PluginLoader->+RetrieveWorker: load plugin if needed
+RetrieveWorker-->-PluginLoader:
+
+PluginLoader->PluginManager:
+PluginManager->-PluginManager:verify Plugin
+PluginManager->PluginHelper:
+PluginHelper->User: load lib
