@@ -1,0 +1,32 @@
+StartActivity;
+if(LoadPlugin?) {
+  startActivity;
+}else{
+  if (in Local?) {
+    add chain;
+    branch(cross_a) [loadconfig] {
+      if(success) {
+        update local;
+      } else {
+        nothing;
+      }
+    }
+  } else {
+    if (load config?) {
+      if (load jar?) {
+        extractNetDex;
+        add chain;
+        registerApplication;
+        creatSub;
+      } else {
+        toast user;
+        return
+      }
+    } else {
+      toast user;
+      return
+    }
+  }
+}
+
+Launch Activity;
