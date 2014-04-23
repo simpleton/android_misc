@@ -1,4 +1,4 @@
-# Plugin Implementation Architecture#
+mit # Plugin Implementation Architecture#
 
 ## Host##
 1. config url:
@@ -23,3 +23,5 @@
 ## Client##
 	
 ![load plugin sequence](http://www.websequencediagrams.com/cgi-bin/cdraw?lz=ClVzZXItPlBsdWdpbkhlbHBlcjogAAgGIFJlcXVlc3QKABEMACMITWFuYWdlcjogcgAfBiBwAD0FACUHABcHAFAITG9hZGVyOiBsb2FkABsOABQGLT4rUmV0cmlldmVXb3JrACIJY29uZmlnCgAODi0tPi0ASQ4AJyUAgRoGIGlmIG5lZWRlZAA2IAoAgRMPAIFpDgCBWBAAgQsHAIIOCHZlcmlmeQCCQQcAgX4WAIJlBwCCTg9VcwCCHwlsaWIKCgo&s=qsd)
+
+![Start Plugin Activity](https://raw.githubusercontent.com/simpleton/android_misc/master/doc/hwouoQ.png)
