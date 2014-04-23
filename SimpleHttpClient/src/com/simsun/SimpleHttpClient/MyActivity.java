@@ -13,6 +13,7 @@ import com.tencent.mm.pluginsdk.downloader.MMPluginLoaderFacotry;
 import com.tencent.mm.pluginsdk.downloader.PluginManager;
 import com.tencent.mm.pluginsdk.downloader.util.HexUtil;
 import com.tencent.mm.pluginsdk.downloader.worker.AarDownloadTask;
+
 import org.apache.http.Header;
 
 import java.io.ByteArrayOutputStream;
@@ -103,6 +104,24 @@ public class MyActivity extends Activity {
                 }
             }
         });
+
+
+        /*String className = (Thread.currentThread().getStackTrace()[3]).getClassName();
+        try {
+            Log.e(TAG, (Thread.currentThread().getStackTrace()[3]).getClass().newInstance().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        final ClassLoader callerClassLoader = (Thread.currentThread().getStackTrace()[3]).getClass().getClassLoader();
+        Log.e(TAG, callerClassLoader.toString());
+        final ClassLoader callerClassLoader1 = Thread.currentThread().getStackTrace()[2].getClass().getClassLoader();
+        Log.e(TAG, callerClassLoader1.toString());
+        for (StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace()) {
+            Log.w(TAG, stackTraceElement.toString());
+        }
+        Log.e(TAG, Thread.currentThread().getStackTrace()[3].toString());
+        Log.e(TAG, Thread.currentThread().getStackTrace()[2].toString());*/
+        //Log.e(TAG, VMStack.getCallingClassLoader());
     }
 
     public byte[] readFully(InputStream in) throws IOException {
