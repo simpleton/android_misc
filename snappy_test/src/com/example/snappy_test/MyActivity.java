@@ -62,14 +62,14 @@ public class MyActivity extends Activity {
         DB snappydb = null;
         try {
             String folder = getExternalFilesDir(null).getAbsolutePath();
-            String dbFilePath = folder + File.separator + "imageDB";
-
+            String dbFilePath = folder + File.separator + "db" + File.separator +"imageDB";
+            new File(dbFilePath).mkdirs();
             Log.d(TAG, "db path is:" + dbFilePath);
             snappydb = new DBImpl(dbFilePath);
 
             Log.i(TAG, "--> start to save image to file");
             for (int i = 0; i < TEST_TIME; ++i) {
-                saveBitmapToFile(this, bitmap, dbFilePath + File.separator + String.format("file%d.png", i));
+                saveBitmapToFile(bitmap, new File(folder + File.separator + String.format("file%d.png", i)));
             }
             Log.i(TAG, "<-- end to save image to file");
 
