@@ -14,6 +14,7 @@ import com.snappydb.internal.DBImpl;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.*;
+import java.util.HashMap;
 
 public class MyActivity extends Activity {
   private static final String TAG = "SnappyTest";
@@ -32,6 +33,7 @@ public class MyActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.main);
     bitmap = getBitmapFromAsset(this, "clock_2.png");
+    MobclickAgent.setDebugMode(true);
   }
 
   @Override
@@ -51,12 +53,35 @@ public class MyActivity extends Activity {
 
   private void uploadResult() {
     //upload inApp result
-    Log.e(TAG, String.format("[result] inApp: file:%d\t levelDB:%d", inAppResult.filesystem, inAppResult.snappyDB));
-
+    uploadInAppResult();
     //upload sdcard result
-    Log.e(TAG, String.format("[result] inSDCard: file:%d\t levelDB:%d", inSDcardResult.filesystem, inSDcardResult.snappyDB));
+    uploadSdcardResult();
   }
 
+  private void uploadSdcardResult() {
+    Log.e(TAG, String.format("[result] inSDCard: file:%d\t levelDB:%d", inSDcardResult.filesystem, inSDcardResult.snappyDB));
+    HashMap<String,String> mapSdcard = new HashMap<String,String>();
+    mapSdcard.put("file", String.valueOf(inSDcardResult.filesystem));
+    mapSdcard.put("LevelDB", String.valueOf(inSDcardResult.snappyDB));
+
+    onEvent(this, "3", mapSdcard, inSDcardResult.filesystem);
+    onEvent(this, "4", mapSdcard, inSDcardResult.snappyDB);
+  }
+
+  private void uploadInAppResult() {
+    Log.e(TAG, String.format("[result] inApp: file:%d\t levelDB:%d", inAppResult.filesystem, inAppResult.snappyDB));
+    HashMap<String,String> map = new HashMap<String,String>();
+    map.put("file", String.valueOf(inAppResult.filesystem));
+    map.put("LevelDB", String.valueOf(inAppResult.snappyDB));
+
+    onEvent(this, "1", map, inAppResult.filesystem);
+    onEvent(this, "2", map, inAppResult.snappyDB);
+  }
+
+  public static void onEvent(Context context, String id, HashMap<String,String> m, long value){
+    m.put("__ct__", String.valueOf(value));
+    MobclickAgent.onEvent(context, id, m);
+  }
   private void testInAppStorage(Bitmap bitmap) {
     Log.d(TAG, "Test internal Storage");
     DB snappydb = null;
