@@ -18,7 +18,8 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <meta-data android:value="536bcf2d56240b0a6b02572b" android:name="UMENG_APPKEY"/>
+        <meta-data android:value="SimBenchMark" android:name="UMENG_CHANNEL"/>
     </application>
-    <meta-data android:value="536bcf2d56240b0a6b02572b" android:name="UMENG_APPKEY"/>
-    <meta-data android:value="SimBenchMark" android:name="UMENG_CHANNEL"/>
+
 </manifest>
