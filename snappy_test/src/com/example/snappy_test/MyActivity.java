@@ -17,13 +17,30 @@ import java.io.*;
 public class MyActivity extends Activity {
     private static final String TAG = "SnappyTest";
     private static final int TEST_TIME = 3000;
+
+    class result {
+        long filesystem;
+        long snappyDB;
+    }
+
+    private result inAppResult = new result();
+    private result inSDcardResult = new result();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         Bitmap bitmap = getBitmapFromAsset(this, "clock_2.png");
-        //testInAppStorage(bitmap);
         testSdcardStorage(bitmap);
+        testInAppStorage(bitmap);
+        uploadResult();
+    }
+    private void uploadResult() {
+        //upload inApp result
+        Log.e(TAG, String.format("[result] inApp: file:%d\t levelDB:%d", inAppResult.filesystem, inAppResult.snappyDB));
+
+        //upload sdcard result
+        Log.e(TAG, String.format("[result] inSDCard: file:%d\t levelDB:%d", inSDcardResult.filesystem, inSDcardResult.snappyDB));
     }
 
     private void testInAppStorage(Bitmap bitmap) {
@@ -32,17 +49,22 @@ public class MyActivity extends Activity {
         try {
             snappydb = DBFactory.open(this, "image");
             Log.i(TAG, "--> start to save image to file");
+            long startTime = System.currentTimeMillis();
             for (int i = 0; i < TEST_TIME; ++i) {
                 saveBitmapToFile(this, bitmap, String.format("file%d.png", i));
             }
+            long endTime = System.currentTimeMillis();
+            inAppResult.filesystem = endTime - startTime;
             Log.i(TAG, "<-- end to save image to file");
 
+            long startTime1 = System.currentTimeMillis();
             Log.i(TAG, "--> start to save image to snappy db");
             for (int i = 0; i < TEST_TIME; ++i) {
                 snappydb.put(String.valueOf(i), getBitmapAsByteArray(bitmap));
             }
+            long endTime1 = System.currentTimeMillis();
+            inAppResult.snappyDB = endTime1 - startTime1;
             Log.i(TAG, "<-- end to save image to snappy db");
-
 
         } catch (SnappydbException e) {
             e.printStackTrace();
@@ -68,15 +90,21 @@ public class MyActivity extends Activity {
             snappydb = new DBImpl(dbFilePath);
 
             Log.i(TAG, "--> start to save image to file");
+            long startTime = System.currentTimeMillis();
             for (int i = 0; i < TEST_TIME; ++i) {
                 saveBitmapToFile(bitmap, new File(folder + File.separator + String.format("file%d.png", i)));
             }
+            long endTime = System.currentTimeMillis();
+            inSDcardResult.filesystem = endTime - startTime;
             Log.i(TAG, "<-- end to save image to file");
 
             Log.i(TAG, "--> start to save image to snappy db");
+            long startTime1 = System.currentTimeMillis();
             for (int i = 0; i < TEST_TIME; ++i) {
                 snappydb.put(String.valueOf(i), getBitmapAsByteArray(bitmap));
             }
+            long endTime1 = System.currentTimeMillis();
+            inSDcardResult.snappyDB = endTime1 - startTime1;
             Log.i(TAG, "<-- end to save image to snappy db");
 
 
